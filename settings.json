@@ -9,6 +9,7 @@
         "echo_pin": 18,
         "delay": 1.5
     },
+<<<<<<< HEAD
     "DPIR1":{
         "simulated": true,
         "pin": 23,
@@ -21,6 +22,13 @@
         "pin": 24,
         "check_interval": 0.5,
         "open_probability": 0.15
+=======
+    "DL": {
+        "simulated": true
+    },
+    "DB": {
+        "simulated": true
+>>>>>>> 4fa0444c8a5f808712f49c21f3f276a456ea1791
     }
 
 }

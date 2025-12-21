@@ -4,8 +4,14 @@ import time
 from settings import load_settings
 from components.ds import run_ds
 from components.uds import run_uds
+<<<<<<< HEAD
 from components.dpir import run_dpir
 from components.dms import run_dms
+=======
+from components.door_light import run_door_light
+from components.door_buzzer import run_door_buzzer
+import time
+>>>>>>> 4fa0444c8a5f808712f49c21f3f276a456ea1791
 
 try:
     import RPi.GPIO as GPIO
@@ -22,6 +28,7 @@ if __name__ == "__main__":
     stop_event = threading.Event()
 
     try:
+<<<<<<< HEAD
         if "DS1" in settings:
             run_ds(settings["DS1"], threads, stop_event)
 
@@ -36,6 +43,12 @@ if __name__ == "__main__":
 
         print("System running")
 
+=======
+        run_ds(settings['DS1'], threads, stop_event)
+        run_uds(settings['UDS1'], threads, stop_event)
+        run_door_light(settings['DL'], threads, stop_event)
+        run_door_buzzer(settings['DB'], threads, stop_event)
+>>>>>>> 4fa0444c8a5f808712f49c21f3f276a456ea1791
         while True:
             time.sleep(1)
 
