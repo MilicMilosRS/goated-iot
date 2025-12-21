@@ -1,5 +1,3 @@
-
-
 from simulators.led import run_led_simulator
 import threading
 import time
