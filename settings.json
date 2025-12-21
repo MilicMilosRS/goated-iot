@@ -8,5 +8,11 @@
         "trig_pin": 4,
         "echo_pin": 18,
         "delay": 1.5
+    },
+    "DL": {
+        "simulated": true
+    },
+    "DB": {
+        "simulated": true
     }
 }

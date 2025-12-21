@@ -3,6 +3,8 @@ import threading
 from settings import load_settings
 from components.ds import run_ds
 from components.uds import run_uds
+from components.door_light import run_door_light
+from components.door_buzzer import run_door_buzzer
 import time
 
 try:
@@ -20,6 +22,8 @@ if __name__ == "__main__":
     try:
         run_ds(settings['DS1'], threads, stop_event)
         run_uds(settings['UDS1'], threads, stop_event)
+        run_door_light(settings['DL'], threads, stop_event)
+        run_door_buzzer(settings['DB'], threads, stop_event)
         while True:
             time.sleep(1)
 
