@@ -1,0 +1,12 @@
+{
+    "DS1": {
+        "simulated": true,
+        "pin": 17
+    },
+    "UDS1": {
+        "simulated": true,
+        "trig_pin": 4,
+        "echo_pin": 18,
+        "delay": 1.5
+    }
+}
