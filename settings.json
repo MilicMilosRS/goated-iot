@@ -1,13 +1,15 @@
 {
-    "device": {
-    "pi_id": "PI1",
-    "device_name": "FrontDoorUnit",
     "mqtt": {
-      "broker": "localhost",
-      "port": 1883,
-      "topic": "iot/sensors"
-        }
+        "broker": "localhost",
+        "port": 1883,
+        "topic": "iot/sensors"
     },
+
+    "device1": {
+        "pi_id": "PI1",
+        "device_name": "FrontDoorUnit",
+    },
+    
     "DS1": {
         "simulated": true,
         "pin": 17

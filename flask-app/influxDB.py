@@ -14,13 +14,12 @@ client = InfluxDBClient(
 
 write_api = client.write_api(write_options=SYNCHRONOUS)
 
-def write_sensor_data(pi_id, device, entry):
+def write_sensor_data(data):
     point = (
-        Point(entry["sensor"])
-        .tag("pi", pi_id)
-        .tag("device", device)
-        .tag("simulated", str(entry["simulated"]))
-        .field("value", entry["value"])
-        .time(entry["timestamp"])
+        Point(data["sensor"])
+        .tag("pi", data["pi"])
+        .tag("simulated", data["simulated"])
+        .field("value", data["value"])
+        .time(data["timestamp"])
     )
     write_api.write(bucket=BUCKET, record=point)
