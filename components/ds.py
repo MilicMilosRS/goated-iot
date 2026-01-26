@@ -1,29 +1,30 @@
-from mqtt.mqtt_buffer import push
-from mqtt import mqtt, mqtt_buffer
 from simulators.ds import run_ds_simulator
 import threading
 import time
+from mqtt_daemon import data_queue
 
-def read_ds(cfg):
-    if cfg["simulated"]:
-        return run_ds_simulator()
-    else:
-        return GPIO.input(cfg["pin"])
+def ds_callback(pi, simulated, state):
+    # Point(data["sensor"])
+    #     .tag("pi", data["pi"])
+    #     .tag("simulated", data["simulated"])
+    #     .field("value", data["value"])
+    #     .time(data["timestamp"])
+    data = {
+         'sensor': 'door sensor',
+         'pi': pi,
+         'simulated': simulated,
+         'value': state,
+         'timestamp': time.time_ns()
+    }
+    data_queue.put(data)
 
-def run_ds(cfg, threads, stop_event):
-    def worker():
-        while not stop_event.is_set():
-            value = read_ds(cfg)
 
-            push({
-                "sensor": "DS",
-                "value": int(value),
-                "timestamp": time.time(),
-                "simulated": cfg["simulated"]
-            })
-
-            time.sleep(1)
-
-    t = threading.Thread(target=worker)
-    t.start()
-    threads.append(t)
+def run_ds(settings, threads, stop_event, pi):
+        if settings['simulated']:
+            print("Starting DS1 sumilation")
+            ds1_thread = threading.Thread(target = run_ds_simulator, args=(2, ds_callback, stop_event, pi))
+            ds1_thread.start()
+            threads.append(ds1_thread)
+            print("DS1 simulation started")
+        else:
+            pass

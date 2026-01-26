@@ -7,9 +7,9 @@
 
     "device1": {
         "pi_id": "PI1",
-        "device_name": "FrontDoorUnit",
+        "device_name": "FrontDoorUnit"
     },
-    
+
     "DS1": {
         "simulated": true,
         "pin": 17
