@@ -1,13 +1,12 @@
 import threading
 import time
-from collections import deque
 from settings import load_settings
-from components.ds import run_ds
-from components.uds import run_uds
+from components.button import Button
+from components.uds import UltrasonicDistanceSensor
 from components.door_light import run_door_light
-from components.door_buzzer import run_door_buzzer
-from components.dms import run_dms
-from components.dpir import run_dpir
+from components.buzzer import run_buzzer
+from components.dms import MembraneSwitch
+from components.dpir import PassiveInfraredSensor
 from mqtt_daemon import MqttDaemon
 
 import time
@@ -38,12 +37,16 @@ if __name__ == "__main__":
     threads.append(mqtt_thread)
 
     try:
-        run_ds(settings['DS1'], threads, stop_event, "PI1")
-        run_uds(settings['UDS1'], threads, stop_event)
+        ds1 = Button(settings['DS1'])
+        ds1.start(threads, stop_event)
+        dus1 = UltrasonicDistanceSensor(settings['DUS1'])
+        dus1.start(threads, stop_event)
         run_door_light(settings['DL'], threads, stop_event)
-        run_door_buzzer(settings['DB'], threads, stop_event)
-        run_dms(settings['DMS1'], threads, stop_event)
-        run_dpir(settings['DPIR1'], threads, stop_event)
+        run_buzzer(settings['DB'], threads, stop_event)
+        dms = MembraneSwitch(settings['DMS'])
+        dms.start(threads, stop_event)
+        dpir1 = PassiveInfraredSensor(settings['DPIR1'])
+        dpir1.start(threads, stop_event)
         while True:
             time.sleep(1)
 

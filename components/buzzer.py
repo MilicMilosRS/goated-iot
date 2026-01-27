@@ -3,7 +3,7 @@ from simulators.buzzer import run_buzzer_simulator
 import threading
 import time
 
-def door_buzzer_callback(state):
+def buzzer_callback(state):
     t = time.localtime()
     print("="*20)
     print(f"Timestamp: {time.strftime('%H:%M:%S', t)}")
@@ -12,10 +12,10 @@ def door_buzzer_callback(state):
     print(f"Status: {status}")
 
 
-def run_door_buzzer(settings, threads, stop_event):
+def run_buzzer(settings, threads, stop_event):
         if settings['simulated']:
             print("Starting Door Buzzer simulation")
-            db_thread = threading.Thread(target = run_buzzer_simulator, args=(door_buzzer_callback, stop_event))
+            db_thread = threading.Thread(target = run_buzzer_simulator, args=(buzzer_callback, stop_event, settings))
             db_thread.start()
             threads.append(db_thread)
             print("Door Buzzer simulation started")

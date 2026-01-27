@@ -1,6 +1,6 @@
 import keyboard
 
-def run_buzzer_simulator(callback, stop_event):
+def run_buzzer_simulator(callback, stop_event, settings):
       is_on = False
       def on_press(e):
             nonlocal is_on

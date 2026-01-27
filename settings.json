@@ -11,32 +11,44 @@
     },
 
     "DS1": {
+        "pi": "PI1",
+        "sensor": "DS1",
+        "delay": 1,
         "simulated": true,
         "pin": 17
     },
-    "UDS1": {
+    "DUS1": {
+        "pi": "PI1",
+        "sensor": "DUS1",
         "simulated": true,
         "trig_pin": 4,
         "echo_pin": 18,
         "delay": 1.5
     },
     "DPIR1":{
+        "pi": "PI1",
+        "sensor": "DPIR1",
         "simulated": true,
         "pin": 23,
         "check_interval": 1.0,
         "motion_probability":0.3,
         "active_time":2.0
     },
-    "DMS1": {
+    "DMS": {
+        "pi": "PI1",
+        "sensor": "DMS",
         "simulated": true,
-        "pin": 24,
-        "check_interval": 0.5,
-        "open_probability": 0.15
+        "pins": [25, 8, 7, 1, 12, 16, 20, 21],
+        "check_interval": 0.2
     },
     "DL": {
+        "pi": "PI1",
+        "sensor": "DL",
         "simulated": true
     },
     "DB": {
+        "pi": "PI1",
+        "sensor": "DB",
         "simulated": true
     }
 
