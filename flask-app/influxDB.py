@@ -24,6 +24,7 @@ def write_sensor_data(data):
                 Point(item["sensor"])
                 .tag("pi", item["pi"])
                 .tag("simulated", str(item["simulated"]))
+                .tag("device", str(item['sensor_device']))
                 .field("value", item["value"])
                 .time(item["timestamp"])
             )

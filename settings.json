@@ -44,11 +44,13 @@
     "DL": {
         "pi": "PI1",
         "sensor": "DL",
+        "pin": 24,
         "simulated": true
     },
     "DB": {
         "pi": "PI1",
         "sensor": "DB",
+        "pin": 22,
         "simulated": true
     }
 

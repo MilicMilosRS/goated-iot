@@ -14,13 +14,28 @@ services:
       DOCKER_INFLUXDB_INIT_BUCKET: iot
       DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: gas
 
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./data/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./data/grafana/datasources:/etc/grafana/provisioning/datasources
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    depends_on:
+      - influxdb
+
   mosquitto:
     image: eclipse-mosquitto
     container_name: mosquitto
     ports:
       - "1883:1883"
     volumes:
-      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./data/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
   flask:
     build: ./flask-app
@@ -32,4 +47,5 @@ services:
       - mosquitto
 
 volumes:
-  influxdb-data:
+  influxdb-data: {}
+  grafana-data: {}

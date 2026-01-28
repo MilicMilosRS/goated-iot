@@ -1,10 +1,9 @@
 import threading
-import time
 from settings import load_settings
 from components.button import Button
 from components.uds import UltrasonicDistanceSensor
-from components.door_light import run_door_light
-from components.buzzer import run_buzzer
+from components.led import LED
+from components.buzzer import Buzzer
 from components.dms import MembraneSwitch
 from components.dpir import PassiveInfraredSensor
 from mqtt_daemon import MqttDaemon
@@ -36,25 +35,38 @@ if __name__ == "__main__":
     mqtt_thread.start()
     threads.append(mqtt_thread)
 
-    try:
-        ds1 = Button(settings['DS1'])
-        ds1.start(threads, stop_event)
-        dus1 = UltrasonicDistanceSensor(settings['DUS1'])
-        dus1.start(threads, stop_event)
-        run_door_light(settings['DL'], threads, stop_event)
-        run_buzzer(settings['DB'], threads, stop_event)
-        dms = MembraneSwitch(settings['DMS'])
-        dms.start(threads, stop_event)
-        dpir1 = PassiveInfraredSensor(settings['DPIR1'])
-        dpir1.start(threads, stop_event)
-        while True:
-            time.sleep(1)
+    ds1 = Button(settings['DS1'])
+    ds1.start(threads, stop_event)
+    dus1 = UltrasonicDistanceSensor(settings['DUS1'])
+    dus1.start(threads, stop_event)
+    dl = LED(settings['DL'])
+    db = Buzzer(settings['DB'])
+    dms = MembraneSwitch(settings['DMS'])
+    dms.start(threads, stop_event)
+    dpir1 = PassiveInfraredSensor(settings['DPIR1'])
+    dpir1.start(threads, stop_event)
+    while True:
+        #BON - BUZZER ON
+        #BOFF - BUZZER OFF
+        #LEDON - LED ON
+        #LEDOFF - LED OFF
+        #END - END PROGRAM
+        command = input()
+        if command == "BON":
+            db.set_state(True)
+        if command == "BOFF":
+            db.set_state(False)
+        if command == "LEDON":
+            dl.set_state(True)
+        if command == "LEDOFF":
+            dl.set_state(False)
+        if command == "END":
+            break
 
-    except KeyboardInterrupt:
-        print("\nHalting")
-        stop_event.set()
+    print("\nHalting")
+    stop_event.set()
 
-        for t in threads:
-            t.join()
+    for t in threads:
+        t.join()
 
-        print("Halted")
+    print("Halted")
