@@ -33,7 +33,7 @@ class LocalGPIO:
 
     def read_value(self, pin):
         if self.GPIO is None:
-            return 0
+            return False
         return self.GPIO.input(pin)
     
     def write_value(self, pin, val: bool):

@@ -1,0 +1,54 @@
+{
+    "mqtt": {
+        "broker": "localhost",
+        "port": 1883,
+        "topic": "iot/sensors"
+    },
+
+    "DS2": {
+        "pi": "PI2",
+        "sensor": "DS2",
+        "delay": 1,
+        "simulated": true,
+        "pin": 17
+    },
+    "DUS2": {
+        "pi": "PI2",
+        "sensor": "DUS2",
+        "simulated": true,
+        "trig_pin": 4,
+        "echo_pin": 18,
+        "delay": 1.5
+    },
+    "DPIR2":{
+        "pi": "PI2",
+        "sensor": "DPIR2",
+        "simulated": true,
+        "pin": 23,
+        "check_interval": 1.0,
+        "motion_probability":0.3,
+        "active_time":2.0
+    },
+    "BTN": {
+        "pi": "PI2",
+        "sensor": "BTN",
+        "delay": 1,
+        "simulated": true,
+        "pin": 24
+    },
+    "DHT3": {
+        "pi": "PI2",
+        "sensor": "BTN",
+        "delay": 2,
+        "pin": 25,
+        "simulated": true
+    },
+    "GSG": {
+        "pi": "PI2",
+        "sensor": "GSG",
+        "sda": 2,
+        "scl": 3,
+        "delay": 2,
+        "simulated": true
+    }
+}

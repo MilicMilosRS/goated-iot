@@ -25,9 +25,16 @@ def write_sensor_data(data):
                 .tag("pi", item["pi"])
                 .tag("simulated", str(item["simulated"]))
                 .tag("device", str(item['sensor_device']))
-                .field("value", item["value"])
                 .time(item["timestamp"])
             )
+
+            if "value" in item:
+                point.field("value", item["value"])
+
+            if 'fields' in item:
+                for f in item['fields']:
+                    point.field(f, item[f])
+
             write_api.write(bucket=BUCKET, record=point)
         except Exception as e:
             print("Influx write error:", e)

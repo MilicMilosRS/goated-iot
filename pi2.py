@@ -1,10 +1,9 @@
 import threading
+from components.dht import DHT
+from components.gyro import Gyro
 from settings import load_settings
 from components.button import Button
 from components.uds import UltrasonicDistanceSensor
-from components.led import LED
-from components.buzzer import Buzzer
-from components.dms import MembraneSwitch
 from components.dpir import PassiveInfraredSensor
 from mqtt_daemon import MqttDaemon
 
@@ -20,7 +19,7 @@ except ImportError:
 if __name__ == "__main__":
     print("Starting app")
 
-    settings = load_settings()
+    settings = load_settings("pi2_settings.json")
     threads = []
     stop_event = threading.Event()
 
@@ -35,31 +34,21 @@ if __name__ == "__main__":
     mqtt_thread.start()
     threads.append(mqtt_thread)
 
-    ds1 = Button(settings['DS1'])
-    ds1.start(threads, stop_event)
-    dus1 = UltrasonicDistanceSensor(settings['DUS1'])
-    dus1.start(threads, stop_event)
-    dl = LED(settings['DL'])
-    db = Buzzer(settings['DB'])
-    dms = MembraneSwitch(settings['DMS'])
-    dms.start(threads, stop_event)
-    dpir1 = PassiveInfraredSensor(settings['DPIR1'])
-    dpir1.start(threads, stop_event)
+    ds2 = Button(settings['DS2'])
+    ds2.start(threads, stop_event)
+    dus2 = UltrasonicDistanceSensor(settings['DUS2'])
+    dus2.start(threads, stop_event)
+    dpir2 = PassiveInfraredSensor(settings['DPIR2'])
+    dpir2.start(threads, stop_event)
+    btn = Button(settings['BTN'])
+    btn.start(threads, stop_event)
+    dht3 = DHT(settings["DHT3"])
+    dht3.start(threads, stop_event)
+    gsg = Gyro(settings["GSG"])
+    gsg.start(threads, stop_event)
     while True:
-        #BON - BUZZER ON
-        #BOFF - BUZZER OFF
-        #LEDON - LED ON
-        #LEDOFF - LED OFF
         #END - END PROGRAM
         command = input()
-        if command == "BON":
-            db.set_state(True)
-        if command == "BOFF":
-            db.set_state(False)
-        if command == "LEDON":
-            dl.set_state(True)
-        if command == "LEDOFF":
-            dl.set_state(False)
         if command == "END":
             break
 
