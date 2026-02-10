@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>IoT Control Panel</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+</head>
+<body>
+<h1>IoT System Dashboard</h1>
+
+<div id="alarms">
+  <h2>ALARM STATUS</h2>
+  <div id="alarm-status">Inactive</div>
+  <input type="text" id="pin-input" placeholder="Enter PIN">
+  <button id="pin-submit">Submit PIN</button>
+</div>
+
+<div id="sensors">
+  <h2>Sensor States</h2>
+  <ul id="sensor-list"></ul>
+</div>
+
+<div id="people-count">
+  <h2>People in Building: <span id="people-num">0</span></h2>
+</div>
+
+<div id="stopwatch">
+  <h2>Kitchen Stopwatch</h2>
+  <div id="timer">00:00</div>
+  <button id="add-time">Add Seconds</button>
+</div>
+
+<div id="lights">
+  <h2>BRGB Light Control</h2>
+  <button id="light-on">On</button>
+  <button id="light-off">Off</button>
+  <input type="color" id="light-color">
+</div>
+
+<div id="grafana">
+  <h2>Grafana Dashboard</h2>
+<iframe
+  src="http://localhost:3000/d/ad6dltq/data?orgId=1&from=now-6h&to=now&timezone=browser&var-sim=True"
+  width="100%"
+  height="600"
+  frameborder="0">
+</iframe>
+
+</div>
+
+<div id="camera">
+  <h2>Camera Feed</h2>
+  <video id="cam-feed" width="640" height="480" autoplay></video>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
