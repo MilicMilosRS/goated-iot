@@ -27,6 +27,6 @@ class Buzzer():
         if not self.cfg['simulated']:
             self.GPIO.write_value(self.cfg['pin'], buzzing)
         else:
-            print(f"Buzzer turned {"ON" if buzzing else "OFF"}")
+            print(f"Buzzer turned {'ON' if buzzing else 'OFF'}")
         self.state_changed(buzzing)
         self.buzzing = buzzing

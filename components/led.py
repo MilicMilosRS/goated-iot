@@ -27,6 +27,6 @@ class LED():
         if not self.cfg['simulated']:
             self.GPIO.write_value(self.cfg['pin'], state)
         else:
-            print(f"LED turned {"ON" if state else "OFF"}")
+            print(f"LED turned {'ON' if state else 'OFF'}")
         self.state_changed(state)
         self.state = state
