@@ -14,7 +14,7 @@ class PassiveInfraredSensor():
             'sensor_device': self.cfg['sensor'],
             'pi': self.cfg['pi'],
             'simulated': self.cfg['simulated'],
-            'value': "Motion detected" if state else "Motion stopped",
+            'value': state,
             'timestamp': time.time_ns()
         }
         data_queue.put(data)

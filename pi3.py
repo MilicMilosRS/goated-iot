@@ -1,7 +1,9 @@
 import threading
 from components.dht import DHT
 from components.gyro import Gyro
-from components.segment_display import SegmentDisplay
+from components.ir_receiver import IRReceiver
+from components.lcd import LCD
+from components.rgb_led import RGBLED
 from settings import load_settings
 from components.button import Button
 from components.uds import UltrasonicDistanceSensor
@@ -20,7 +22,7 @@ except ImportError:
 if __name__ == "__main__":
     print("Starting app")
 
-    settings = load_settings("pi2_settings.json")
+    settings = load_settings("pi3_settings.json")
     mqtt_settings = load_settings("mqtt_settings.json")
     threads = []
     stop_event = threading.Event()
@@ -36,29 +38,39 @@ if __name__ == "__main__":
     mqtt_thread.start()
     threads.append(mqtt_thread)
 
-    ds2 = Button(settings['DS2'])
-    dus2 = UltrasonicDistanceSensor(settings['DUS2'])
-    dpir2 = PassiveInfraredSensor(settings['DPIR2'])
-    sd = SegmentDisplay(settings['4SD'])
-    btn = Button(settings['BTN'])
-    dht3 = DHT(settings["DHT3"])
-    gsg = Gyro(settings["GSG"])
+    dht1 = DHT(settings["DHT1"])
+    dht2 = DHT(settings["DHT2"])
+    ir = IRReceiver(settings["IR"])
+    brgb = RGBLED(settings["BRGB"])
+    lcd = LCD(settings["LCD"])
+    dpir3 = PassiveInfraredSensor(settings['DPIR3'])
 
+    dht1.start(threads, stop_event)
+    dht2.start(threads, stop_event)
+    ir.start(threads, stop_event)
+    dpir3.start(threads, stop_event)
 
-    ds2.start(threads, stop_event)
-    dus2.start(threads, stop_event)
-    dpir2.start(threads, stop_event)
-    btn.start(threads, stop_event)
-    dht3.start(threads, stop_event)
-    gsg.start(threads, stop_event)
     while True:
+        #BRGB1 - All 1
+        #BRGB2 - Red
+        #BRGB3 - whatever
+        #BRGB4 - Off
+        #LCD - show message
         #END - END PROGRAM
         command = input()
         if command == "END":
             break
-        elif command == "4SD":
+        elif command == "BRGB1":
+            brgb.set_state(True, True, True)
+        elif command == "BRGB2":
+            brgb.set_state(True, False, False)
+        elif command == "BRGB3":
+            brgb.set_state(True, False, True)
+        elif command == "BRGB4":
+            brgb.set_state(False, False, False)
+        elif command == "LCD":
             msg = input()
-            sd.set_state(msg)
+            lcd.set_state(msg)
 
     print("\nHalting")
     stop_event.set()

@@ -14,7 +14,7 @@ class Button():
             'sensor_device': self.cfg['sensor'],
             'pi': self.cfg['pi'],
             'simulated': self.cfg['simulated'],
-            'value': "Pressed" if state else "Released",
+            'value': state,
             'timestamp': time.time_ns()
         }
         data_queue.put(data)

@@ -21,13 +21,14 @@ if __name__ == "__main__":
     print("Starting app")
 
     settings = load_settings("pi1_settings.json")
+    mqtt_settings = load_settings("mqtt_settings.json")
     threads = []
     stop_event = threading.Event()
 
     mqtt_thread = MqttDaemon(
-        broker=settings['mqtt']['broker'],
+        broker=mqtt_settings['broker'],
         stop_event=stop_event,
-        topic=settings['mqtt']['topic'],
+        topic=mqtt_settings['topic'],
         batch_size=10,
         interval=2
     )
