@@ -26,9 +26,6 @@ services:
     environment:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: admin
-      GF_SECURITY_ALLOW_EMBEDDING: "true"
-      GF_AUTH_ANONYMOUS_ENABLED: "true"
-      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
     depends_on:
       - influxdb
 
@@ -37,7 +34,6 @@ services:
     container_name: mosquitto
     ports:
       - "1883:1883"
-      - "9001:9001"
     volumes:
       - ./data/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
 

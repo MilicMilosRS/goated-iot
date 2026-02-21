@@ -1,6 +1,3 @@
 {
-    "python.analysis.autoImportCompletions": true,
-    "python.analysis.extraPaths": [
-        "./flask-app"
-    ]
+    "python.analysis.autoImportCompletions": true
 }
