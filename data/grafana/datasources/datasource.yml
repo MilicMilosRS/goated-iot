@@ -6,6 +6,7 @@ datasources:
     access: proxy
     url: http://influxdb:8086
     isDefault: true
+    editable: true
     jsonData:
       version: Flux
       organization: iot

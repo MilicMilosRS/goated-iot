@@ -34,6 +34,7 @@ class DHT(object):
 	def __init__(self,cfg):
 		self.cfg = cfg
 		self.pin = cfg['pin']
+		self.active = cfg.get("active", True)
 		self.bits = [0,0,0,0,0]
 		self.GPIO = LocalGPIO()
 
@@ -112,6 +113,9 @@ class DHT(object):
 		else:
 			def run():
 				while not stop_event.is_set():
+					if not self.active:
+						time.sleep(1)
+						continue
 					self.temperature = random.random() * 30
 					self.humidity = random.random() * 80
 					self.state_changed("DHTLIB_OK")

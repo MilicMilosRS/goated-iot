@@ -10,6 +10,7 @@ ButtonsNames = ["LEFT",   "RIGHT",      "UP",       "DOWN",       "2",          
 
 class IRReceiver():
     def __init__(self, cfg):
+        self.active = cfg.get("active", True)
         self.cfg = cfg
         self.GPIO = LocalGPIO()
         self.pin = cfg['pin']
@@ -99,7 +100,7 @@ class IRReceiver():
             threads.append(t)
         else:
             def loop():
-                while not stop_event.is_set():
+                while not stop_event.is_set() and self.active:
                     self.state_changed(random.randrange(len(Buttons)))
                     time.sleep(self.cfg['delay'])
             t = threading.Thread(target=loop)

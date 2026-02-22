@@ -6,6 +6,7 @@ from components.local_gpio import LocalGPIO
 
 class Button():
     def __init__(self, cfg):
+        self.active = cfg.get("active", True)
         self.cfg = cfg
     
     def state_changed(self, state):
@@ -17,7 +18,11 @@ class Button():
             'value': state,
             'timestamp': time.time_ns()
         }
+        print(data)
         data_queue.put(data)
+
+    def simulate_state(self, state: bool):
+        self.state_changed(state)
 
     def start(self, threads: list, stop_event: threading.Event):
         if not self.cfg['simulated']:
@@ -42,6 +47,9 @@ class Button():
             def loop():
                 last = False
                 while not stop_event.is_set():
+                    if not self.active:
+                        time.sleep(1)
+                        continue
                     val = random.random() < 0.5
                     if val != last:
                         self.state_changed(val)

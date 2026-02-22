@@ -1,5 +1,6 @@
 {
     "broker": "localhost",
     "port": 1883,
-    "topic": "iot/sensors"
+    "topic": "iot/sensors",
+    "actuator_topic": "iot/actuators"
 }

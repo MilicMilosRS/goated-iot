@@ -17,7 +17,7 @@
         "simulated": true,
         "trig_pin": 4,
         "echo_pin": 18,
-        "delay": 1.5
+        "delay": 1
     },
     "DPIR1":{
         "pi": "PI1",

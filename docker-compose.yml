@@ -30,9 +30,11 @@ services:
       - ./data/grafana/dashboards:/etc/grafana/provisioning/dashboards
       - ./data/grafana/datasources:/etc/grafana/provisioning/datasources
     environment:
+      GF_SECURITY_ALLOW_EMBEDDING: true
+      GF_AUTH_ANONYMOUS_ENABLED: true
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: admin
-      GF_FEATURE_TOGGLES_INFLUXDBBACKENDMIGRATION: "false"
     depends_on:
       influxdb:
         condition: service_healthy

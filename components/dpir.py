@@ -6,6 +6,7 @@ from components.local_gpio import LocalGPIO
 
 class PassiveInfraredSensor():
     def __init__(self, cfg):
+        self.active = cfg.get("active", True)
         self.cfg = cfg
     
     def state_changed(self, state: bool):
@@ -17,7 +18,11 @@ class PassiveInfraredSensor():
             'value': state,
             'timestamp': time.time_ns()
         }
+        print(data)
         data_queue.put(data)
+
+    def simulate_state(self, state: bool):
+        self.state_changed(state)
 
     def start(self, threads: list, stop_event: threading.Event):
         if not self.cfg['simulated']:
@@ -38,6 +43,9 @@ class PassiveInfraredSensor():
             def run():
                 state = 0
                 while not stop_event.is_set():
+                    if not self.active:
+                        time.sleep(1)
+                        continue
                     time.sleep(self.cfg['check_interval'])
 
                     if state == 1:
