@@ -5,6 +5,7 @@ from mqtt_daemon import data_queue
 
 class Gyro():
     def __init__(self, cfg):
+        self.active = cfg.get("active", True)
         self.cfg = cfg
     
     def state_changed(self, accel, gyro):
@@ -41,7 +42,7 @@ class Gyro():
             threads.append(t)
         else:
             def loop():
-                while not stop_event.is_set():
+                while not stop_event.is_set() and self.active:
                     accel = [random.random(), random.random(), random.random()]
                     gyro = [random.random(), random.random(), random.random()]
                     self.state_changed(accel, gyro)

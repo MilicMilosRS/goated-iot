@@ -15,7 +15,7 @@ class Buzzer():
             'sensor_device': self.cfg['sensor'],
             'pi': self.cfg['pi'],
             'simulated': self.cfg['simulated'],
-            'value': "STARTED" if state else "STOPPED",
+            'value': state,
             'timestamp': time.time_ns()
         }
         data_queue.put(data)

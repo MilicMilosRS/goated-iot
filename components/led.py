@@ -15,7 +15,7 @@ class LED():
             'sensor_device': self.cfg['sensor'],
             'pi': self.cfg['pi'],
             'simulated': self.cfg['simulated'],
-            'value': "TURNED ON" if state else "TURNED OFF",
+            'value': state,
             'timestamp': time.time_ns()
         }
         data_queue.put(data)

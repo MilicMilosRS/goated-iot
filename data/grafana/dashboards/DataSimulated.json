@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 6,
   "links": [],
   "panels": [
     {
@@ -90,7 +90,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "from(bucket: \"iot\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r._measurement == \"Motion sensor\")\r\n  |> filter(fn: (r) => r.simulated == \"${sim}\")\r\n  |> filter(fn: (r) => r.pi == \"PI1\")\r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> fill(column: \"_value\", usePrevious: true)",
+          "query": "from(bucket: \"iot\")\r\n  |> range(start: -30m)\r\n  |> filter(fn: (r) => r._measurement == \"Motion sensor\")\r\n  |> filter(fn: (r) => r.simulated == \"True\")\r\n  |> filter(fn: (r) => r.pi == \"PI1\")\r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> fill(column: \"_value\", usePrevious: true)",
           "refId": "A"
         }
       ],
@@ -185,7 +185,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "from(bucket: \"iot\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r._measurement == \"Ultrasonic sensor\")\r\n  |> filter(fn: (r) => r.simulated == \"${sim}\")\r\n  |> filter(fn: (r) => r.pi == \"PI1\")\r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> fill(column: \"_value\", usePrevious: true)",
+          "query": "from(bucket: \"iot\")\r\n  |> range(start: -30m)\r\n  |> filter(fn: (r) => r._measurement == \"Ultrasonic sensor\")\r\n  |> filter(fn: (r) => r.simulated == \"True\")\r\n  |> filter(fn: (r) => r.pi == \"PI1\")\r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> fill(column: \"_value\", usePrevious: true)",
           "refId": "A"
         }
       ],
@@ -253,7 +253,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "from(bucket: \"iot\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r._measurement == \"Membrane switch\")\r\n  |> filter(fn: (r) => r.simulated == \"${sim}\")\r\n  |> filter(fn: (r) => r.pi == \"PI1\")\r\n  |> keep(columns: [\"_time\", \"_value\", \"device\", \"pi\"])\r\n  |> fill(column: \"_value\", usePrevious: true)",
+          "query": "from(bucket: \"iot\")\r\n  |> range(start: -30m)\r\n  |> filter(fn: (r) => r._measurement == \"Membrane switch\")\r\n  |> filter(fn: (r) => r.simulated == \"True\")\r\n  |> filter(fn: (r) => r.pi == \"PI1\")\r\n  |> keep(columns: [\"_time\", \"_value\", \"device\", \"pi\"])\r\n  |> fill(column: \"_value\", usePrevious: true)",
           "refId": "A"
         }
       ],
@@ -329,7 +329,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "from(bucket: \"iot\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r._measurement == \"Button\")\r\n  |> filter(fn: (r) => r.simulated == \"${sim}\")\r\n  |> filter(fn: (r) => r.pi == \"PI1\")\r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> fill(column: \"_value\", usePrevious: true)",
+          "query": "from(bucket: \"iot\")\r\n  |> range(start: -30m)\r\n  |> filter(fn: (r) => r._measurement == \"Button\")\r\n  |> filter(fn: (r) => r.simulated == \"True\")\r\n  |> filter(fn: (r) => r.pi == \"PI1\")\r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> fill(column: \"_value\", usePrevious: true)",
           "refId": "A"
         }
       ],
@@ -411,7 +411,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "from(bucket: \"iot\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r._measurement == \"Buzzer\")\r\n  |> filter(fn: (r) => r.simulated == \"${sim}\")\r\n  |> filter(fn: (r) => r.pi == \"PI1\")\r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n",
+          "query": "from(bucket: \"iot\")\r\n  |> range(start: -30m)\r\n  |> filter(fn: (r) => r._measurement == \"Buzzer\")\r\n  |> filter(fn: (r) => r.simulated == \"True\")\r\n  |> filter(fn: (r) => r.pi == \"PI1\")\r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n",
           "refId": "A"
         }
       ],
@@ -487,7 +487,7 @@
             "type": "influxdb",
             "uid": "influxdb-iot"
           },
-          "query": "from(bucket: \"iot\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r._measurement == \"LED\")\r\n  |> filter(fn: (r) => r.simulated == \"${sim}\")\r\n  |> filter(fn: (r) => r.pi == \"PI1\")\r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n",
+          "query": "from(bucket: \"iot\")\r\n  |> range(start: -30m)\r\n  |> filter(fn: (r) => r._measurement == \"LED\")\r\n  |> filter(fn: (r) => r.simulated == \"True\")\r\n  |> filter(fn: (r) => r.pi == \"PI1\")\r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n",
           "refId": "A"
         }
       ],
@@ -499,30 +499,7 @@
   "schemaVersion": 42,
   "tags": [],
   "templating": {
-    "list": [
-      {
-        "current": {
-          "text": "True",
-          "value": "True"
-        },
-        "label": "IsSimulated",
-        "name": "sim",
-        "options": [
-          {
-            "selected": true,
-            "text": "True",
-            "value": "True"
-          },
-          {
-            "selected": false,
-            "text": "False",
-            "value": "False"
-          }
-        ],
-        "query": "True, False",
-        "type": "custom"
-      }
-    ]
+    "list": []
   },
   "time": {
     "from": "now-6h",
@@ -530,7 +507,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "PI1",
-  "uid": "ad6dltq",
-  "version": 3
+  "title": "PI1 Simulated",
+  "uid": "ad6dltqs",
+  "version": 2
 }

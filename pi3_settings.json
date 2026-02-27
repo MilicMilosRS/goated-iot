@@ -1,0 +1,50 @@
+{
+    "DHT1": {
+        "pi": "PI3",
+        "sensor": "DHT1",
+        "delay": 2,
+        "pin": 25,
+        "simulated": true
+    },
+    "DHT2": {
+        "pi": "PI3",
+        "sensor": "DHT2",
+        "delay": 2,
+        "pin": 24,
+        "simulated": true
+    },
+    "IR": {
+        "pi": "PI3",
+        "sensor": "IR",
+        "delay": 1,
+        "pin": 23,
+        "simulated": true
+    },
+    "BRGB": {
+        "pi": "PI3",
+        "sensor": "BRGB",
+        "delay": 1,
+        "red_pin": 22,
+        "green_pin": 27,
+        "blue_pin": 17,
+        "simulated": true
+    },
+    "LCD": {
+        "pi": "PI3",
+        "sensor": "LCD",
+        "delay": 1,
+        "pin_rs": 0,
+        "pin_e": 2,
+        "pins": [4,5,6,7],
+        "simulated": true
+    },
+    "DPIR3":{
+        "pi": "PI3",
+        "sensor": "DPIR3",
+        "simulated": true,
+        "pin": 16,
+        "check_interval": 1.0,
+        "motion_probability":0.3,
+        "active_time":2.0
+    }
+}

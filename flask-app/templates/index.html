@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>IoT Sistem - Kontrolna Tabla</title>
+<style>
+  body {
+    background-color: #d4e8d4;
+    font-family: Arial, sans-serif;
+    margin: 10px;
+  }
+
+  h1 {
+    color: #003300;
+    text-align: center;
+    text-decoration: underline;
+  }
+
+  h2 {
+    color: #005500;
+    background-color: #b0d4b0;
+    padding: 4px;
+    border: 2px solid #005500;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td {
+    vertical-align: top;
+    padding: 5px;
+  }
+
+  .box {
+    border: 2px solid #555;
+    background-color: #f0f0f0;
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+
+  #alarmBox {
+    border: 3px solid green;
+    background-color: #ccffcc;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  input[type=number], input[type=text] {
+    width: 60px;
+    border: 1px solid #999;
+  }
+
+  button {
+    background-color: #cccccc;
+    border: 2px outset #888;
+    padding: 3px 8px;
+    cursor: pointer;
+    margin: 2px;
+  }
+
+  button:active {
+    border-style: inset;
+  }
+
+  .pinbtn {
+    width: 40px;
+    height: 35px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  #pinDisplay {
+    font-size: 20px;
+    font-family: "Courier New";
+    background: white;
+    border: 2px inset #999;
+    padding: 4px 10px;
+    letter-spacing: 8px;
+    display: inline-block;
+    width: 120px;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  #timerDisplay {
+    font-size: 36px;
+    font-family: "Courier New";
+    background: black;
+    color: lime;
+    padding: 6px 14px;
+    display: inline-block;
+    margin-bottom: 6px;
+    letter-spacing: 4px;
+  }
+
+  #timerDisplay.expired {
+    color: red;
+  }
+
+  #timerDisplay.idle {
+    color: #336633;
+  }
+
+  #brgbPreview {
+    width: 40px;
+    height: 40px;
+    border: 2px solid black;
+    display: inline-block;
+    vertical-align: middle;
+    background: black;
+  }
+
+  .colorBtn {
+    width: 30px;
+    height: 30px;
+    border: 2px solid #333;
+    cursor: pointer;
+    margin: 2px;
+  }
+
+  #logTable {
+    width: 100%;
+    font-size: 12px;
+    font-family: "Courier New";
+    border: 1px solid #999;
+    background: white;
+  }
+
+  #logTable td {
+    border-bottom: 1px solid #ddd;
+    padding: 2px 4px;
+  }
+
+  #connStatus {
+    font-weight: bold;
+  }
+
+  #sensorTable {
+    width: 100%;
+    border: 1px solid #aaa;
+    font-size: 13px;
+  }
+
+  #sensorTable th {
+    background-color: #99bb99;
+    border: 1px solid #777;
+    padding: 3px;
+  }
+
+  #sensorTable td {
+    border: 1px solid #ccc;
+    padding: 3px;
+    background: white;
+  }
+
+  #pinFeedback {
+    color: red;
+    font-weight: bold;
+    font-size: 13px;
+    min-height: 18px;
+  }
+</style>
+</head>
+<body>
+
+<h1>IoT Sistem - Kontrolna Tabla</h1>
+
+<p style="text-align:center;">
+  Status veze: <span id="connStatus" style="color:red;">OFFLINE</span>
+  &nbsp;&nbsp;&nbsp;
+  Vreme: <span id="clock">--:--:--</span>
+</p>
+
+<div id="alarmBox">
+  <span id="alarmLabel">Sistem aktivan</span>
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+  Osoba u objektu: <span id="personCount">0</span>
+  <br>
+  <small id="alarmReason" style="font-weight:normal;">Sve stavke uredne</small>
+</div>
+
+<table>
+<tr>
+
+<td style="width:55%;">
+
+  <div class="box">
+    <h2>Status Senzora</h2>
+    <table id="sensorTable">
+      <tr>
+        <th>Uredjaj</th>
+        <th>Vrednost</th>
+        <th>Vreme</th>
+      </tr>
+    </table>
+  </div>
+
+  <div class="box">
+    <h2>Dogadjaji</h2>
+    <div style="height:200px; overflow-y:scroll; background:white; border:1px inset #aaa;">
+      <table id="logTable">
+      </table>
+    </div>
+  </div>
+
+</td>
+
+<td style="width:45%;">
+
+  <div class="box">
+    <h2>Unos PIN Koda</h2>
+    <div id="pinDisplay">____</div><br>
+    <table>
+      <tr>
+        <td><button class="pinbtn" onclick="pinDigit('1')">1</button></td>
+        <td><button class="pinbtn" onclick="pinDigit('2')">2</button></td>
+        <td><button class="pinbtn" onclick="pinDigit('3')">3</button></td>
+      </tr>
+      <tr>
+        <td><button class="pinbtn" onclick="pinDigit('4')">4</button></td>
+        <td><button class="pinbtn" onclick="pinDigit('5')">5</button></td>
+        <td><button class="pinbtn" onclick="pinDigit('6')">6</button></td>
+      </tr>
+      <tr>
+        <td><button class="pinbtn" onclick="pinDigit('7')">7</button></td>
+        <td><button class="pinbtn" onclick="pinDigit('8')">8</button></td>
+        <td><button class="pinbtn" onclick="pinDigit('9')">9</button></td>
+      </tr>
+      <tr>
+        <td><button class="pinbtn" onclick="pinClear()" style="color:red;">C</button></td>
+        <td><button class="pinbtn" onclick="pinDigit('0')">0</button></td>
+        <td><button class="pinbtn" onclick="pinBack()">&#8592;</button></td>
+      </tr>
+    </table>
+    <br>
+    <button onclick="submitPin()" style="background:#99cc99; font-weight:bold;">POTVRDI PIN</button>
+    <br><br>
+    <div id="pinFeedback"></div>
+  </div>
+
+  <div class="box">
+    <h2>Kuhinjska Stoperica (4SD)</h2>
+
+    <div id="timerDisplay" class="idle">--:--</div>
+    <br>
+    <small id="timerStateLabel">NEAKTIVNA</small>
+    <br><br>
+
+    Minuti: <input type="number" id="timerMin" value="5" min="0" max="99">
+    Sekunde: <input type="number" id="timerSec" value="0" min="0" max="59">
+    <button onclick="timerSetFromInputs()" style="background:#99cc99;">START</button>
+    <br><br>
+
+    Brzi izbor:
+    <button onclick="timerSetSec(60)">1 min</button>
+    <button onclick="timerSetSec(180)">3 min</button>
+    <button onclick="timerSetSec(300)">5 min</button>
+    <button onclick="timerSetSec(600)">10 min</button>
+    <br><br>
+
+    Dodaj vreme:
+    <button onclick="timerAdd(30)">+30s</button>
+    <button onclick="timerAdd(60)">+1 min</button>
+    <br><br>
+
+    <button onclick="timerCancel()" style="background:#ffaaaa; color:darkred;">OTKAZI</button>
+    <br><br>
+
+    <hr>
+    BTN dugme dodaje:
+    <input type="number" id="btnAddInput" value="30" min="1" max="600" style="width:50px;">
+    sekundi
+    <button onclick="saveBtnAdd()">Sacuvaj</button>
+  </div>
+
+  <div class="box">
+    <h2>BRGB Sijalica</h2>
+
+    Stanje: <span id="brgbPreview"></span>
+    <span id="brgbStatus" style="font-weight:bold; margin-left:8px;">ISKLJUCENA</span>
+    <br><br>
+
+    Kanali:<br>
+    <label><input type="checkbox" id="chR" onchange="brgbSetChannel()"> Crvena (R)</label><br>
+    <label><input type="checkbox" id="chG" onchange="brgbSetChannel()"> Zelena (G)</label><br>
+    <label><input type="checkbox" id="chB" onchange="brgbSetChannel()"> Plava (B)</label>
+    <br><br>
+
+    Brze boje:<br>
+    <button class="colorBtn" style="background:#ff0000;" title="Crvena" onclick="brgbPreset(true,false,false)"></button>
+    <button class="colorBtn" style="background:#00ff00;" title="Zelena" onclick="brgbPreset(false,true,false)"></button>
+    <button class="colorBtn" style="background:#0000ff;" title="Plava"  onclick="brgbPreset(false,false,true)"></button>
+    <button class="colorBtn" style="background:#ffffff;" title="Bela"   onclick="brgbPreset(true,true,true)"></button>
+    <button class="colorBtn" style="background:#ffff00;" title="Zuta"   onclick="brgbPreset(true,true,false)"></button>
+    <button class="colorBtn" style="background:#00ffff;" title="Cijan"  onclick="brgbPreset(false,true,true)"></button>
+    <button class="colorBtn" style="background:#ff00ff;" title="Ljubicanstvenija" onclick="brgbPreset(true,false,true)"></button>
+    <button class="colorBtn" style="background:#222222;" title="Ugasi"  onclick="brgbPreset(false, false, false)"></button>
+  </div>
+
+</td>
+</tr>
+</table>
+<div>
+<span>PI 1</span>
+<br>
+<iframe src="http://localhost:3000/d-solo/ad6dltqs/pi1-simulated?orgId=1&from=1771758227046&to=1771779827046&timezone=browser&panelId=panel-5&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/ad6dltqs/pi1-simulated?orgId=1&from=1771758227046&to=1771779827046&timezone=browser&panelId=panel-6&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/ad6dltqs/pi1-simulated?orgId=1&from=1771758227046&to=1771779827046&timezone=browser&panelId=panel-4&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/ad6dltqs/pi1-simulated?orgId=1&from=1771758227046&to=1771779827046&timezone=browser&panelId=panel-3&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/ad6dltqs/pi1-simulated?orgId=1&from=1771758227046&to=1771779827046&timezone=browser&panelId=panel-2&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/ad6dltqs/pi1-simulated?orgId=1&from=1771758227046&to=1771779827046&timezone=browser&panelId=panel-1&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+</div>
+<div>
+<span>PI 2</span>
+<br>
+<iframe src="http://localhost:3000/d-solo/adn66lbs/pi2-simulated?orgId=1&from=1771778340358&to=1771780140358&timezone=browser&var-sim=True&panelId=panel-7&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/adn66lbs/pi2-simulated?orgId=1&from=1771778340358&to=1771780140358&timezone=browser&var-sim=True&panelId=panel-4&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/adn66lbs/pi2-simulated?orgId=1&from=1771778340358&to=1771780140358&timezone=browser&var-sim=True&panelId=panel-8&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/adn66lbs/pi2-simulated?orgId=1&from=1771778340358&to=1771780140358&timezone=browser&var-sim=True&panelId=panel-2&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/adn66lbs/pi2-simulated?orgId=1&from=1771778340358&to=1771780140358&timezone=browser&var-sim=True&panelId=panel-6&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/adn66lbs/pi2-simulated?orgId=1&from=1771778340358&to=1771780140358&timezone=browser&var-sim=True&panelId=panel-3&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/adn66lbs/pi2-simulated?orgId=1&from=1771778340358&to=1771780140358&timezone=browser&var-sim=True&panelId=panel-5&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+</div>
+<div>
+<span>PI 3</span>
+<br>
+<iframe src="http://localhost:3000/d-solo/adxftmws/pi3-simulated?orgId=1&from=1771779356330&to=1771780256330&timezone=browser&var-sim=True&panelId=panel-3&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/adxftmws/pi3-simulated?orgId=1&from=1771779356330&to=1771780256330&timezone=browser&var-sim=True&panelId=panel-4&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/adxftmws/pi3-simulated?orgId=1&from=1771779356330&to=1771780256330&timezone=browser&var-sim=True&panelId=panel-2&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/adxftmws/pi3-simulated?orgId=1&from=1771779356330&to=1771780256330&timezone=browser&var-sim=True&panelId=panel-5&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/adxftmws/pi3-simulated?orgId=1&from=1771779356330&to=1771780256330&timezone=browser&var-sim=True&panelId=panel-6&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/adxftmws/pi3-simulated?orgId=1&from=1771779356330&to=1771780256330&timezone=browser&var-sim=True&panelId=panel-7&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+</div>
+<script>
+const state = {
+  alarm: false, armed: false, persons: 0,
+  sensors: {},
+  timer: { state: 'IDLE', remaining: 0, btn_add_sec: 30 },
+  brgb:  { power: false, r: false, g: false, b: false },
+};
+
+let pinBuffer = '';
+
+// Clock
+function updateClock() {
+  document.getElementById('clock').textContent =
+    new Date().toLocaleTimeString('sr-RS', { hour12: false });
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// PIN
+function updatePinDisplay() {
+  const filled = '●'.repeat(pinBuffer.length);
+  const empty  = '_'.repeat(4 - pinBuffer.length);
+  document.getElementById('pinDisplay').textContent = filled + empty;
+}
+
+function pinFeedback(msg, color) {
+  const el = document.getElementById('pinFeedback');
+  el.textContent = msg;
+  el.style.color = color || 'red';
+  setTimeout(() => { el.textContent = ''; }, 2500);
+}
+
+function pinDigit(d) {
+  if (pinBuffer.length < 4) { pinBuffer += d; updatePinDisplay(); }
+  if (pinBuffer.length === 4) submitPin();
+}
+function pinBack()  { pinBuffer = pinBuffer.slice(0,-1); updatePinDisplay(); }
+function pinClear() { pinBuffer = ''; updatePinDisplay(); }
+
+async function submitPin() {
+  const pin = pinBuffer;
+  pinBuffer = ''; updatePinDisplay();
+  try {
+    const res = await fetch('/pin', { method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ pin }) });
+    if (res.ok) pinFeedback('PIN prihvacen!', 'green');
+    else        pinFeedback('Pogresan PIN!', 'red');
+  } catch { pinFeedback('Greska!', 'red'); }
+}
+
+// Banner
+function refreshBanner(reason) {
+  const box = document.getElementById('alarmBox');
+  document.getElementById('personCount').textContent = state.persons;
+  if (state.alarm) {
+    box.style.backgroundColor = '#ffcccc';
+    box.style.borderColor = 'red';
+    document.getElementById('alarmIcon').textContent = '🚨';
+    document.getElementById('alarmLabel').textContent = 'ALARM AKTIVAN!!!';
+    document.getElementById('alarmReason').textContent = reason || 'Upad detektovan - unesite PIN!';
+  } else if (state.armed) {
+    box.style.backgroundColor = '#ffffcc';
+    box.style.borderColor = 'orange';
+    document.getElementById('alarmIcon').textContent = '🛡';
+    document.getElementById('alarmLabel').textContent = 'Sistem naoruzran';
+    document.getElementById('alarmReason').textContent = 'Unesite PIN za deaktivaciju';
+  } else {
+    box.style.backgroundColor = '#ccffcc';
+    box.style.borderColor = 'green';
+    document.getElementById('alarmIcon').textContent = '🔒';
+    document.getElementById('alarmLabel').textContent = 'Sistem aktivan';
+    document.getElementById('alarmReason').textContent = 'Sve stavke uredne';
+  }
+}
+
+// Sensors
+function formatValue(device, pkt) {
+  if (device.startsWith('DUS')) return Number(pkt.value).toFixed(1) + ' cm';
+  if (device.startsWith('DHT')) return Number(pkt.temperature).toFixed(1) + '°C / ' + Number(pkt.humidity).toFixed(0) + '%';
+  if (device === 'GSG') {
+    const mag = Math.sqrt(pkt.accel_x**2 + pkt.accel_y**2 + pkt.accel_z**2);
+    const ang = Math.sqrt(pkt.gyro_x**2 + pkt.gyro_y**2 + pkt.gyro_z**2);
+    return mag.toFixed(2) + ' g ' + ang.toFixed(2) + "°";
+  }
+  if (device === 'IR') return pkt.button_name;
+  if (device === 'RGBR') return 'RED ' + pkt.red + ' GREEN ' + pkt.green + ' BLUE ' + pkt.blue
+  if (typeof pkt.value === 'boolean') return pkt.value ? 'DA' : 'NE';
+  return String(pkt.value);
+}
+
+function updateSensorTile(device, pkt) {
+  state.sensors[device] = pkt;
+  let row = document.getElementById('sr-' + device);
+  if (!row) {
+    row = document.createElement('tr');
+    row.id = 'sr-' + device;
+    row.innerHTML = `<td><b>${device}</b></td><td id="sv-${device}">-</td><td id="st-${device}">-</td>`;
+    document.getElementById('sensorTable').appendChild(row);
+  }
+  document.getElementById('sv-' + device).textContent = formatValue(device, pkt);
+  document.getElementById('st-' + device).textContent =
+    new Date().toLocaleTimeString('sr-RS', { hour12: false });
+  row.style.backgroundColor = 'white';
+}
+
+// Log
+function addLogEntry(evt) {
+  const table = document.getElementById('logTable');
+  const row = document.createElement('tr');
+  const t = new Date().toLocaleTimeString('sr-RS', { hour12: false });
+  const desc = evt.reason || evt.source || (evt.person_count !== undefined ? 'Broj: '+evt.person_count : '');
+  row.innerHTML = `<td style="color:#666;white-space:nowrap;">${t}</td><td><b>${evt.event}</b></td><td>${desc}</td>`;
+  if (table.firstChild) table.insertBefore(row, table.firstChild);
+  else table.appendChild(row);
+  while (table.rows.length > 50) table.deleteRow(table.rows.length - 1);
+}
+
+// Timer
+function fmtSec(s) {
+  s = Math.max(0, s);
+  return String(s).padStart(4, " ");
+}
+
+let _timerBlink = null;
+let _localTick  = null;
+
+function refreshTimer(t) {
+  if (!t) return;
+  state.timer = t;
+  clearInterval(_timerBlink); _timerBlink = null;
+  clearInterval(_localTick);  _localTick  = null;
+
+  const disp  = document.getElementById('timerDisplay');
+  const label = document.getElementById('timerStateLabel');
+
+  if (t.state === 'RUNNING') {
+    disp.className = 'timer-display';
+    disp.textContent = fmtSec(t.remaining);
+    label.textContent = 'TRAJE...';
+    _localTick = setInterval(() => {
+      if (state.timer.state !== 'RUNNING') { clearInterval(_localTick); return; }
+      state.timer.remaining = Math.max(0, state.timer.remaining - 1);
+      disp.textContent = fmtSec(state.timer.remaining);
+    }, 1000);
+  } else if (t.state === 'EXPIRED') {
+    disp.className = 'timer-display expired';
+    label.textContent = '!!! ISTEKLO - Pritisni BTN ili klikni OTKAZI !!!';
+    let v = true;
+    _timerBlink = setInterval(() => {
+      disp.textContent = v ? '0000' : '     ';
+      v = !v;
+    }, 500);
+  } else {
+    disp.className = 'timer-display idle';
+    disp.textContent = '    ';
+    label.textContent = 'NEAKTIVNA';
+  }
+
+  if (t.btn_add_sec !== undefined)
+    document.getElementById('btnAddInput').value = t.btn_add_sec;
+}
+
+async function timerSetSec(s) {
+  await fetch('/timer/set', { method:'POST',
+    headers:{'Content-Type':'application/json'}, body: JSON.stringify({seconds: s}) });
+}
+async function timerSetFromInputs() {
+  const mm = parseInt(document.getElementById('timerMin').value)||0;
+  const ss = parseInt(document.getElementById('timerSec').value)||0;
+  await timerSetSec(mm*60+ss);
+}
+async function timerAdd(s) {
+  await fetch('/timer/add', { method:'POST',
+    headers:{'Content-Type':'application/json'}, body: JSON.stringify({seconds: s}) });
+}
+async function timerCancel() {
+  await fetch('/timer/cancel', { method:'POST' });
+}
+async function saveBtnAdd() {
+  const n = parseInt(document.getElementById('btnAddInput').value);
+  if (!n || n < 1) return;
+  await fetch('/timer/config', { method:'POST',
+    headers:{'Content-Type':'application/json'}, body: JSON.stringify({btn_add_seconds: n}) });
+}
+
+// BRGB
+function refreshBRGB(b) {
+  if (!b) return;
+  state.brgb = b;
+  document.getElementById('chR').checked = b.r;
+  document.getElementById('chG').checked = b.g;
+  document.getElementById('chB').checked = b.b;
+  const r = b.r ? 255 : 0;
+  const g = b.g ? 255 : 0;
+  const bl= b.b ? 255 : 0;
+  document.getElementById('brgbPreview').style.background = `rgb(${r},${g},${bl})`;
+  const names = [];
+  if (b.r) names.push('R'); if (b.g) names.push('G'); if (b.b) names.push('B');
+  document.getElementById('brgbStatus').textContent = 'UKLJUCENA: ' + (names.join('+') || 'nema boje');
+}
+
+async function brgbSetChannel() {
+  const r = document.getElementById('chR').checked;
+  const g = document.getElementById('chG').checked;
+  const b = document.getElementById('chB').checked;
+  await fetch('/brgb/color', { method:'POST',
+    headers:{'Content-Type':'application/json'}, body: JSON.stringify({r, g, b}) });
+}
+async function brgbPreset(r, g, b) {
+  await fetch('/brgb/color', { method:'POST',
+    headers:{'Content-Type':'application/json'}, body: JSON.stringify({r, g, b}) });
+}
+
+// SSE
+function connectSSE() {
+  const es = new EventSource('/events');
+
+  es.onopen = () => {
+    document.getElementById('connStatus').textContent = 'ONLINE';
+    document.getElementById('connStatus').style.color = 'green';
+  };
+
+  es.onmessage = e => {
+    let evt;
+    try { evt = JSON.parse(e.data); } catch { return; }
+
+    if ('alarm_active'   in evt) state.alarm   = evt.alarm_active;
+    if ('security_armed' in evt) state.armed   = evt.security_armed;
+    if ('person_count'   in evt) state.persons = evt.person_count;
+
+    if (evt.event === 'ALARM_ON')          { state.alarm = true;  refreshBanner(evt.reason); }
+    if (evt.event === 'ALARM_OFF')         { state.alarm = false; state.armed = false; refreshBanner(); }
+    if (evt.event === 'SECURITY_ARMED')    { state.armed = true;  refreshBanner(); }
+    if (evt.event === 'SECURITY_DISARMED') { state.armed = false; refreshBanner(); }
+    if (evt.event === 'PERSON_ENTRY' || evt.event === 'PERSON_EXIT') {
+      state.persons = evt.person_count; refreshBanner();
+    }
+    if (evt.event === 'PIN_WRONG') pinFeedback('Pogresan PIN!', 'red');
+    if (evt.event === 'TIMER_STATUS') refreshTimer(evt);
+    if (evt.event === 'BRGB_STATUS')  refreshBRGB(evt);
+
+    if (evt.event === 'STATE_SYNC') {
+      state.alarm   = evt.alarm_active;
+      state.armed   = evt.security_armed;
+      state.persons = evt.person_count;
+      refreshBanner();
+      if (evt.timer) refreshTimer(evt.timer);
+      if (evt.brgb)  refreshBRGB(evt.brgb);
+      return;
+    }
+
+    if(evt.event === 'SENSOR_DATA'){
+      updateSensorTile(evt.sensor_device, evt)
+    }
+
+    addLogEntry(evt);
+    refreshBanner(evt.reason || '');
+  };
+
+  es.onerror = () => {
+    document.getElementById('connStatus').textContent = 'OFFLINE';
+    document.getElementById('connStatus').style.color = 'red';
+    es.close();
+    setTimeout(connectSSE, 3000);
+  };
+}
+
+connectSSE();
+refreshBanner();
+refreshTimer({ state: 'IDLE', remaining: 0, btn_add_sec: 30 });
+refreshBRGB({ power: false, r: false, g: false, b: false });
+</script>
+
+</body>
+</html>

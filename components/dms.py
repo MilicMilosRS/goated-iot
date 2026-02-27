@@ -6,6 +6,7 @@ from mqtt_daemon import data_queue
 
 class MembraneSwitch():
     def __init__(self, cfg):
+        self.active = cfg.get("active", True)
         self.cfg = cfg
 
     def state_changed(self, character):
@@ -17,7 +18,11 @@ class MembraneSwitch():
             'value': character,
             'timestamp': time.time_ns()
         }
+        print(data)
         data_queue.put(data)
+
+    def simulate_state(self, char):
+        self.state_changed(char)
 
     def start(self, threads: list, stop_event: threading.Event):
         if not self.cfg['simulated']:
@@ -89,6 +94,9 @@ class MembraneSwitch():
 
             def run():
                 while not stop_event.is_set():
+                    if not self.active:
+                        time.sleep(1)
+                        continue
                     if random.random() < 0.5:
                         self.state_changed(random.sample(possible_keys, 1)[0])
 

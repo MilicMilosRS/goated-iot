@@ -1,5 +1,6 @@
 
 
+import math
 import random
 from components.local_gpio import LocalGPIO
 import threading
@@ -8,6 +9,7 @@ from mqtt_daemon import data_queue
 
 class UltrasonicDistanceSensor():
     def __init__(self, cfg):
+        self.active = cfg.get("active", True)
         self.cfg = cfg
     
     def state_changed(self, distance):
@@ -19,6 +21,7 @@ class UltrasonicDistanceSensor():
             'value': distance,
             'timestamp': time.time_ns()
         }
+        print(data)
         data_queue.put(data)
 
     def start(self, threads: list, stop_event: threading.Event):
@@ -73,8 +76,11 @@ class UltrasonicDistanceSensor():
         else:
             def run():
                 while not stop_event.is_set():
+                    if not self.active:
+                        time.sleep(1)
+                        continue
                     time.sleep(self.cfg['delay'])
-                    self.state_changed(random.random() * 20)
+                    self.state_changed(math.sin(time.time() /20) * 20 + 10)
             t = threading.Thread(target=run)
             t.start()
             threads.append(t)
